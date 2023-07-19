@@ -5,7 +5,7 @@ plugins {
 }
 
 archivesBaseName = 'lavadsp'
-group 'dev.arbjerg'
+group 'one.keia.lava'
 def (versionStr, isSnapshot) = getGitVersion()
 version versionStr
 println "Version: " + versionStr
@@ -16,13 +16,16 @@ targetCompatibility = 11
 repositories {
     jcenter()
     maven {
-        url "https://maven.arbjerg.dev/releases"
+        url "https://maven.dimensional.fun/releases"
+    }
+    maven {
+        url "https://maven.dimensional.fun/snapshots"
     }
 }
 
 dependencies {
     implementation 'org.slf4j:slf4j-api:1.7.30'
-    implementation 'dev.arbjerg:native-loader:0.0.1'
+    implementation "one.keia.lava:native-loader:f944224"
     compileOnly 'com.sedmelluq:lavaplayer:1.3.66'
     testImplementation 'com.sedmelluq:lavaplayer:1.3.66'
     testImplementation 'ch.qos.logback:logback-classic:1.2.3'
@@ -111,8 +114,8 @@ publishing {
     if (isMavenDefined) {
         System.out.println("Publishing to Maven Repo")
         repositories {
-            def snapshots = "https://maven.arbjerg.dev/snapshots"
-            def releases = "https://maven.arbjerg.dev/releases"
+            def snapshots = "https://maven.dimensional.fun/snapshots"
+            def releases = "https://maven.dimensional.fun/releases"
 
             maven {
                 name = "Reposilite"
