@@ -52,49 +52,49 @@ jobs:
         with:
           name: linux-x86-natives
           path: src/main/resources/natives/*
-  linux-arm-natives:
-    runs-on: ubuntu-latest
-    container: ubuntu:18.04
-    env:
-      TZ: Etc/UTC
-      DEBIAN_FRONTEND: noninteractive
-    steps:
-      - uses: actions/checkout@v2
-      - name: Cache natives
-        uses: actions/cache@v2
-        id: cache-natives
-        with:
-          path: |
-            src/main/resources/natives/linux-arm
-            src/main/resources/natives/linux-aarch64
-            src/main/resources/natives/linux-musl-aarch64
-          key: linux-arm-${{ hashFiles('natives/**') }}
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        if: steps.cache-natives.outputs.cache-hit != 'true'
-        with:
-          distribution: zulu
-          java-version: 13
-      - name: Install ARM compilers
-        if: steps.cache-natives.outputs.cache-hit != 'true'
-        run: |
-          # installing these two breaks i386 compilation
-          # https://bugs.launchpad.net/ubuntu/+source/gcc-defaults/+bug/1300211
-          apt update
-          apt install curl git -y
-          apt install g++-arm-linux-gnueabihf -y
-          apt install g++-aarch64-linux-gnu -y
-          curl -sL https://github.com/natanbc/actions-binaries/releases/download/1/aarch64-linux-musl-cross.tgz -o - | tar xzf -
-      - name: Build ARM natives
-        if: steps.cache-natives.outputs.cache-hit != 'true'
-        run: |
-          chmod +x gradlew
-          export PATH="$PATH:$(pwd)/aarch64-linux-musl-cross/bin"
-          ./gradlew buildLinuxGlibcArm buildLinuxGlibcAarch64 buildLinuxMuslAarch64
-      - uses: actions/upload-artifact@v2
-        with:
-          name: linux-arm-natives
-          path: src/main/resources/natives/*
+#   linux-arm-natives:
+#     runs-on: ubuntu-latest
+#     container: ubuntu:18.04
+#     env:
+#       TZ: Etc/UTC
+#       DEBIAN_FRONTEND: noninteractive
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Cache natives
+#         uses: actions/cache@v2
+#         id: cache-natives
+#         with:
+#           path: |
+#             src/main/resources/natives/linux-arm
+#             src/main/resources/natives/linux-aarch64
+#             src/main/resources/natives/linux-musl-aarch64
+#           key: linux-arm-${{ hashFiles('natives/**') }}
+#       - name: Set up JDK
+#         uses: actions/setup-java@v3
+#         if: steps.cache-natives.outputs.cache-hit != 'true'
+#         with:
+#           distribution: zulu
+#           java-version: 13
+#       - name: Install ARM compilers
+#         if: steps.cache-natives.outputs.cache-hit != 'true'
+#         run: |
+#           # installing these two breaks i386 compilation
+#           # https://bugs.launchpad.net/ubuntu/+source/gcc-defaults/+bug/1300211
+#           apt update
+#           apt install curl git -y
+#           apt install g++-arm-linux-gnueabihf -y
+#           apt install g++-aarch64-linux-gnu -y
+#           curl -sL https://github.com/natanbc/actions-binaries/releases/download/1/aarch64-linux-musl-cross.tgz -o - | tar xzf -
+#       - name: Build ARM natives
+#         if: steps.cache-natives.outputs.cache-hit != 'true'
+#         run: |
+#           chmod +x gradlew
+#           export PATH="$PATH:$(pwd)/aarch64-linux-musl-cross/bin"
+#           ./gradlew buildLinuxGlibcArm buildLinuxGlibcAarch64 buildLinuxMuslAarch64
+#       - uses: actions/upload-artifact@v2
+#         with:
+#           name: linux-arm-natives
+#           path: src/main/resources/natives/*
   mac-natives:
     runs-on: macos-latest
     steps:
@@ -150,7 +150,7 @@ jobs:
           name: windows-natives
           path: src/main/resources/natives/*
   build:
-    needs: [linux-x86-natives, linux-arm-natives, mac-natives, windows-natives]
+    needs: [linux-x86-natives, mac-natives, windows-natives]
     runs-on: ubuntu-20.04
     env:
       MAVEN_USERNAME: ${{ vars.MAVEN_USERNAME }}
