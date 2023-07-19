@@ -162,10 +162,10 @@ jobs:
         with:
           name: linux-x86-natives
           path: src/main/resources/natives/
-      - uses: actions/download-artifact@v2
-        with:
-          name: linux-arm-natives
-          path: src/main/resources/natives/
+#       - uses: actions/download-artifact@v2
+#         with:
+#           name: linux-arm-natives
+#           path: src/main/resources/natives/
       - uses: actions/download-artifact@v2
         with:
           name: mac-natives
